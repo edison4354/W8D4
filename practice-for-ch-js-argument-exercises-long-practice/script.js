@@ -21,32 +21,33 @@ function sumRest(...args) {
 // console.log(sumRest(1, 2, 3, 4)) // === 10;
 // console.log(sumRest(1, 2, 3, 4, 5)) // === 15;
 
-// Function.prototype.myBind = function(context) {
-//     const self = this
-//     // return (arguments) => {
-//     //     this.call(context, arguments)
-//     // }
-//     let arg = arguments.slice(1)
-
-//     return function() {
-//         const allArgs = arguments.concat(arg)
-
-//         return self.apply(context, allArgs)
-//     }
-// }
-
-Function.prototype.myBind = function(context, ...args) {
+Function.prototype.myBind = function(context) {
     const self = this
     // return (arguments) => {
     //     this.call(context, arguments)
     // }
+    console.log(arguments)
+    let arg = Array.from(arguments).slice(1)
 
-    return function(...args_2) {
-        const allArgs = args.concat(args_2)
+    return function() {
+        const allArgs = Array.from(arguments).concat(arg)
 
         return self.apply(context, allArgs)
     }
 }
+
+// Function.prototype.myBind = function(context, ...args) {
+//     const self = this
+//     // return (arguments) => {
+//     //     this.call(context, arguments)
+//     // }
+
+//     return function(...args_2) {
+//         const allArgs = args.concat(args_2)
+
+//         return self.apply(context, allArgs)
+//     }
+// }
 
 class Cat {
     constructor(name) {
@@ -73,7 +74,7 @@ const pavlov = new Dog("Pavlov");
 // true
 
 // bind time args are "meow" and "Kush", no call time args
-// markov.says.myBind(pavlov, "meow", "Kush")();
+markov.says.myBind(pavlov, "meow", "Kush")();
 // Pavlov says meow to Kush!
 // true
 
@@ -112,5 +113,28 @@ function curriedSum(num) {
 }
 
 
-const sum = curriedSum(4);
-console.log(sum(5)(30)(20)(1)); // => 56
+// const sum = curriedSum(4);
+// console.log(sum(5)(30)(20)(1)); // => 56
+
+Function.prototype.curry = function(numArgs) {
+    const allArgs = [];
+    const that = this;
+
+    return function _collect(arg) {
+        allArgs.push(arg)
+        if (allArgs.length === numArgs) {
+            return that.apply(null, allArgs)
+        } else {
+            return _collect
+        }
+    }
+}
+
+function test(arg1, arg2, arg3) {
+    console.log(arg1, arg2, arg3)
+}
+
+const curryTest = test.curry(3)
+curryTest(1)
+curryTest(2)
+curryTest(3)
