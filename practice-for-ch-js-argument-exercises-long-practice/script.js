@@ -123,7 +123,7 @@ Function.prototype.curry = function(numArgs) {
     return function _collect(arg) {
         allArgs.push(arg)
         if (allArgs.length === numArgs) {
-            return that.apply(null, allArgs)
+            return that(...allArgs)
         } else {
             return _collect
         }
@@ -135,6 +135,22 @@ function test(arg1, arg2, arg3) {
 }
 
 const curryTest = test.curry(3)
-curryTest(1)
-curryTest(2)
-curryTest(3)
+// curryTest(1)
+// curryTest(2)
+// curryTest(3)
+
+
+Function.prototype.inherits = function(superClass) {
+  function Surrogate() {};
+  Surrogate.prototype = superClass.prototype;
+  this.prototype = new Surrogate();
+  this.prototype.constructor = this;
+}
+
+function MovingObject () {}
+
+function Ship () {}
+console.log(Ship.inherits(MovingObject));
+
+function Asteroid () {}
+console.log(Asteroid.inherits(MovingObject));
