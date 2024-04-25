@@ -150,7 +150,26 @@ Function.prototype.inherits = function(superClass) {
 function MovingObject () {}
 
 function Ship () {}
-console.log(Ship.inherits(MovingObject));
+Ship.inherits(MovingObject);
 
 function Asteroid () {}
-console.log(Asteroid.inherits(MovingObject));
+Asteroid.inherits(MovingObject);
+
+let movingObj = new MovingObject();
+let ship = new Ship();
+let asteroid = new Asteroid();
+
+// Define a method on MovingObject
+MovingObject.prototype.move = function() {
+    console.log("Moving object is moving...");
+};
+
+Ship.prototype.shoot = function() {
+    console.log("Shots fired!!")
+}
+
+// Test if ship and asteroid instances can use the method defined on MovingObject
+ship.move();
+asteroid.move();
+
+ship.shoot();
